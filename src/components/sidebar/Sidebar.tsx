@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../redux-store/hooks'
 import { selectAuthState } from '../../redux-store/auth.slice'
 import { getUserByUserId } from '../../utils/firebase-functions'
 import User from './components/User'
+import Suggestions from './components/Suggestions'
 
 const Sidebar = () => {
   const { user } = useAppSelector(selectAuthState)
@@ -20,6 +21,7 @@ const Sidebar = () => {
   return (
     <Box sx={{ p: '1rem' }}>
       <User />
+      <Suggestions/>
     </Box>
   )
 }

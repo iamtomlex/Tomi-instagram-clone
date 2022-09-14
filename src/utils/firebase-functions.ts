@@ -11,11 +11,27 @@ import {
   MakeSignUpRequestInterface,
   UserData,
 } from './types'
-import { AuthState } from '../redux-store/types'
+import {
+  AuthState,
+  SuggestedProfilesState,
+  UserInfoState,
+} from '../redux-store/types'
 import { PersistPartial } from 'redux-persist/es/persistReducer'
 import { AnyAction, Dispatch, EmptyObject } from '@reduxjs/toolkit'
-import { doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore'
+import {
+  arrayRemove,
+  arrayUnion,
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from 'firebase/firestore'
 import { getUserInfo } from '../redux-store/user.slice'
+import { getSuggestedProfiles } from '../redux-store/suggestedProfiles.slice'
 
 export const makeSignUpRequest = async (
   payload: MakeSignUpRequestInterface,
@@ -110,7 +126,57 @@ export const getUserByUserId = async (
 
   const result = docSnap.data()
   const user: any = { ...result }
-  console.log(user)
 
-  dispatch(getUserInfo(user))
+  dispatch(getUserInfo({ ...user }))
+}
+
+export const getUserSuggestedProfiles = async (
+  userId: string,
+  following: string[],
+  dispatch: ThunkDispatch<
+    EmptyObject & {
+      auth: AuthState
+      user: UserInfoState
+      suggestedProfiles: SuggestedProfilesState
+    } & PersistPartial,
+    undefined,
+    AnyAction
+  > &
+    Dispatch<AnyAction>
+) => {
+  const q = query(colRef, limit(10))
+  const result = await getDocs(q)
+
+  const profiles = result.docs
+    .map((user) => ({ ...user.data() }))
+    .filter(
+      (profile) =>
+        profile.userId !== userId && !following.includes(profile.userId)
+    )
+
+  dispatch(getSuggestedProfiles([...profiles]))
+}
+
+export const updateLoggedInUserFollowing = async (
+  userId: string,
+  profileId: string,
+  isFollowingProfile: boolean
+) => {
+  const docRef = doc(db, 'users', userId)
+  return await updateDoc(docRef, {
+    following: isFollowingProfile
+      ? arrayRemove(profileId)
+      : arrayUnion(profileId),
+  })
+}
+
+export const updateFollowedProfile = async (
+  userId: string,
+  profileId: string,
+  isFollowed: boolean
+) => {
+  const docRef = doc(db, 'users', profileId)
+  return await updateDoc(docRef, {
+    followers: isFollowed ? arrayRemove(userId) : arrayUnion(userId),
+  })
 }

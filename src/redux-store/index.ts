@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage'
 import authReducer from './auth.slice'
 import userReducer from './user.slice'
 import logger from 'redux-logger'
+import suggestedProfilesReducer from './suggestedProfiles.slice'
 
 const persistConfig = {
   key: 'root',
@@ -13,6 +14,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   auth: authReducer,
   user: userReducer,
+  suggestedProfiles: suggestedProfilesReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

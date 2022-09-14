@@ -14,6 +14,8 @@ import { ROUTES } from '../../utils/constants'
 import styles from './styles'
 import { useAppDispatch, useAppSelector } from '../../redux-store/hooks'
 import { logout, selectAuthState } from '../../redux-store/auth.slice'
+import { clearUserInfo } from '../../redux-store/user.slice'
+import { clearSuggestedProfiles } from '../../redux-store/suggestedProfiles.slice'
 
 const Header = () => {
   const dispatch = useAppDispatch()
@@ -22,6 +24,8 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logout())
+    dispatch(clearUserInfo())
+    dispatch(clearSuggestedProfiles())
     navigate(ROUTES.LOGIN)
     toast.success('Successfully Logged out')
   }
@@ -52,7 +56,7 @@ const Header = () => {
           <Box>
             {user ? (
               <Box sx={styles.right}>
-                <Tooltip title='Home'  >
+                <Tooltip title='Home'>
                   <IconButton>
                     <HomeOutlinedIcon
                       fontSize='large'
@@ -61,7 +65,7 @@ const Header = () => {
                   </IconButton>
                 </Tooltip>
 
-                <Tooltip title='Sign Out' >
+                <Tooltip title='Sign Out'>
                   <IconButton
                     onClick={handleLogout}
                     onKeyDown={(e) => {

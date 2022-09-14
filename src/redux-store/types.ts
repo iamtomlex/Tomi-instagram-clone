@@ -21,14 +21,32 @@ export interface SignInData {
   password: string
 }
 
+export interface UserInfo {
+  email: string
+  userId: string
+  username: string
+  fullName: string
+  followers: string[]
+  following: string[]
+  dateCreated: string
+}
+
 export interface UserInfoState {
-  userInfo: {
-    email: string
-    userId: string
-    username: string
-    fullName: string
-    followers: string[]
-    following: string[]
-    dateCreated: string
-  }
+  userInfo: UserInfo | null
+}
+
+export interface SuggestedProfile {
+  // suggestedProfiles: {
+  email: string
+  userId: string
+  username: string
+  fullName: string
+  followers: string[]
+  following: string[]
+  dateCreated: string
+  // }[]
+}
+
+export interface SuggestedProfilesState {
+  suggestedProfiles: SuggestedProfile[] | null
 }

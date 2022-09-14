@@ -10,40 +10,42 @@ import { useAppSelector } from '../../../redux-store/hooks'
 const User = () => {
   const { userInfo } = useAppSelector(selectUserInfoState)
 
-  console.log(userInfo.username);
-  
+  const username = userInfo?.username
+  const fullName = userInfo?.fullName
 
   return (
-    <Box>
-      {/* {!username || !fullName ? (
-        <Skeleton count={1} height={61} />
-      ) : (
-        <Link to={`/p/${username}`}>
-          <Box
-            sx={{
-              display: 'flex',
-              gap: '1rem',
-              alignItems: 'center',
-            }}
-          >
-            <Avatar
-              sx={{ width: '4rem', height: '4rem' }}
-              src={`/images/avatars/${username}.jpg`}
-              alt={`${fullName}`}
-            />
+    <>
+      <Box>
+        {!username || !fullName ? (
+          <Skeleton count={1} height={61} />
+        ) : (
+          <Link to={`/p/${username}`}>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: '1rem',
+                alignItems: 'center',
+              }}
+            >
+              <Avatar
+                sx={{ width: '4rem', height: '4rem' }}
+                src={`/images/avatars/${username}.jpg`}
+                alt={`${fullName}`}
+              />
 
-            <Box sx={{ color: '#2e2e2e' }}>
-              <Typography fontWeight={600} variant='h6' component='p'>
-                {username}
-              </Typography>
-              <Typography variant='body1' component='p'>
-                {fullName}
-              </Typography>
+              <Box sx={{ color: '#2e2e2e' }}>
+                <Typography fontWeight={600} variant='h6' component='p'>
+                  {username}
+                </Typography>
+                <Typography variant='body1' component='p'>
+                  {fullName}
+                </Typography>
+              </Box>
             </Box>
-          </Box>
-        </Link> */}
-      {/* )} */}
-    </Box>
+          </Link>
+        )}
+      </Box>
+    </>
   )
 }
 
