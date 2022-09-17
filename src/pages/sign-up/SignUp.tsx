@@ -58,7 +58,7 @@ const SignUp = () => {
         setFullName('')
       }
     } else {
-      toast.error('The username already exist. Try another one!!')
+      toast.error('This username already exist. Try another one!!')
       setLoading(false)
       setEmail('')
       setPassword('')

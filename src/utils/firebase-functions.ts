@@ -13,6 +13,7 @@ import {
 } from './types'
 import {
   AuthState,
+  Photos,
   SuggestedProfilesState,
   UserInfoState,
 } from '../redux-store/types'
@@ -21,6 +22,7 @@ import { AnyAction, Dispatch, EmptyObject } from '@reduxjs/toolkit'
 import {
   arrayRemove,
   arrayUnion,
+  collection,
   doc,
   getDoc,
   getDocs,
@@ -32,6 +34,8 @@ import {
 } from 'firebase/firestore'
 import { getUserInfo } from '../redux-store/user.slice'
 import { getSuggestedProfiles } from '../redux-store/suggestedProfiles.slice'
+import { getFollowedUserPhotos } from '../redux-store/photos.slice'
+import { Comment } from '../components/post/types'
 
 export const makeSignUpRequest = async (
   payload: MakeSignUpRequestInterface,
@@ -66,7 +70,7 @@ export const makeSignUpRequest = async (
       email: payload.email.toLowerCase(),
       followers: [],
       following: [],
-      dateCreated: `${Date.now()}`,
+      dateCreated: Date.now(),
     },
     { merge: true }
   )
@@ -104,7 +108,7 @@ export const makeLoginRequest = async (
 export const doesUsernameExist = async (
   username: string
 ): Promise<boolean[]> => {
-  const q = query(colRef, where('usernmae', '==', username))
+  const q = query(colRef, where('username', '==', username))
   const result = await getDocs(q)
   return result.docs.map((user) => user.data().length > 0)
 }
@@ -178,5 +182,69 @@ export const updateFollowedProfile = async (
   const docRef = doc(db, 'users', profileId)
   return await updateDoc(docRef, {
     followers: isFollowed ? arrayRemove(userId) : arrayUnion(userId),
+  })
+}
+
+export const getPhotos = async (
+  userId: string,
+  following: string[],
+  dispatch: ThunkDispatch<
+    EmptyObject & {
+      auth: AuthState
+      user: UserInfoState
+      suggestedProfiles: SuggestedProfilesState
+      photos: Photos
+    } & PersistPartial,
+    undefined,
+    AnyAction
+  > &
+    Dispatch<AnyAction>
+) => {
+  const photoRef = collection(db, 'photos')
+  const q = query(photoRef, where('userId', 'in', following))
+  const result = await getDocs(q)
+
+  const userFollowedPhotos = result.docs.map((photo) => ({
+    ...photo.data(),
+  }))
+
+  const photosWithUserDetails = await Promise.all(
+    userFollowedPhotos.map(async (photo) => {
+      let userLikedPhotos: boolean = false
+      if (photo.likes.includes(userId)) {
+        userLikedPhotos = true
+      }
+      const docRef = doc(db, 'users', photo.userId)
+      const docSnap = await getDoc(docRef)
+      const result = docSnap.data()
+      const username: string = result?.username
+      return { username, ...photo, userLikedPhotos }
+    })
+  )
+
+  dispatch(getFollowedUserPhotos(photosWithUserDetails))
+}
+
+export const handleLiked = async (
+  photoId: string,
+  userId: string,
+  toggleLiked: boolean
+) => {
+  const docRef = doc(db, 'photos', photoId)
+
+  return await updateDoc(docRef, {
+    likes: toggleLiked ? arrayRemove(userId) : arrayUnion(userId),
+  })
+}
+
+export const addComments = async (
+  photoId: string,
+  displayName: string | null | undefined,
+  comment: string
+) => {
+  const docRef = doc(db, 'photos', photoId)
+
+  return await updateDoc(docRef, {
+    comments: arrayUnion({ displayName, comment }),
   })
 }

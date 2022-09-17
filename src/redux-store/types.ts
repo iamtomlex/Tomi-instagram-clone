@@ -50,3 +50,38 @@ export interface SuggestedProfile {
 export interface SuggestedProfilesState {
   suggestedProfiles: SuggestedProfile[] | null
 }
+
+export interface Extras {
+  userLikedPhotos: boolean
+  username: string
+}
+
+interface Comment {
+  comment: string
+  displayName: string
+}
+
+export interface Photos {
+  // photos: {
+    username: string
+    userLatitude: string
+    comments: Comment[]
+    caption: string
+    dateCreated: number
+    likes: string[]
+    photoId: string
+    userLongitude: string
+    userId: string
+    imageSrc: string
+    // photosWithUserDetails:Extras[]
+    userLikedPhotos: boolean
+  }
+
+
+export interface PhotosState {
+  photos: Photos[] | null
+}
+
+export interface PhotosAction {
+  photos: Photos[]
+}

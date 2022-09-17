@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from '../../redux-store/hooks'
 import { logout, selectAuthState } from '../../redux-store/auth.slice'
 import { clearUserInfo } from '../../redux-store/user.slice'
 import { clearSuggestedProfiles } from '../../redux-store/suggestedProfiles.slice'
+import { clearPhotos } from '../../redux-store/photos.slice'
 
 const Header = () => {
   const dispatch = useAppDispatch()
@@ -26,6 +27,7 @@ const Header = () => {
     dispatch(logout())
     dispatch(clearUserInfo())
     dispatch(clearSuggestedProfiles())
+    dispatch(clearPhotos())
     navigate(ROUTES.LOGIN)
     toast.success('Successfully Logged out')
   }

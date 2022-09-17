@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid'
 import { Link } from 'react-router-dom'
 import Header from '../../components/header'
 import Sidebar from '../../components/sidebar'
-import { Timeline } from '@mui/icons-material'
+import Timeline from '../../components/timeline'
 
 const Dashboard = () => {
   React.useEffect(() => {
@@ -16,7 +16,7 @@ const Dashboard = () => {
       <Header />
 
       <Grid container spacing={4} sx={{ mt: '5rem' }}>
-        <Grid item xs={8}>
+        <Grid item xs={8} >
           <Timeline />
         </Grid>
 

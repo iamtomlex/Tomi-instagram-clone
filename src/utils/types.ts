@@ -11,9 +11,14 @@ export interface MakeLoginRequestInterface {
 }
 
 export interface UserData {
-  //   user: {
   email: string | null
   displayName: string | null
   uid: string
-  //   }
+}
+
+export interface uuu {
+  photos: {
+    userLikedPhotos: boolean
+    username: string
+  }[]
 }

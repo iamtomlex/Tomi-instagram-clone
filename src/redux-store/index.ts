@@ -1,10 +1,11 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import logger from 'redux-logger'
 import authReducer from './auth.slice'
 import userReducer from './user.slice'
-import logger from 'redux-logger'
 import suggestedProfilesReducer from './suggestedProfiles.slice'
+import photosReducer from './photos.slice'
 
 const persistConfig = {
   key: 'root',
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   user: userReducer,
   suggestedProfiles: suggestedProfilesReducer,
+  photos:photosReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

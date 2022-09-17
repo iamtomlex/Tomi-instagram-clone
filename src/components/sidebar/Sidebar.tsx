@@ -19,9 +19,17 @@ const Sidebar = () => {
   }, [dispatch, user])
 
   return (
-    <Box sx={{ p: '1rem' }}>
+    <Box
+      sx={{
+        pr: {
+          xs: '0.5rem',
+          md: '2rem',
+          lg: '4rem',
+        },
+      }}
+    >
       <User />
-      <Suggestions/>
+      <Suggestions />
     </Box>
   )
 }
