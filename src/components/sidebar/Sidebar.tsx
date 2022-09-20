@@ -26,6 +26,10 @@ const Sidebar = () => {
           md: '2rem',
           lg: '4rem',
         },
+        pl:{
+          xs:'2rem',
+          sm:'3rem'
+        }
       }}
     >
       <User />

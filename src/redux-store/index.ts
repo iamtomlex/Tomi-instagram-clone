@@ -6,6 +6,7 @@ import authReducer from './auth.slice'
 import userReducer from './user.slice'
 import suggestedProfilesReducer from './suggestedProfiles.slice'
 import photosReducer from './photos.slice'
+import profileReducer from './profile.slice'
 
 const persistConfig = {
   key: 'root',
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   user: userReducer,
   suggestedProfiles: suggestedProfilesReducer,
-  photos:photosReducer
+  photos: photosReducer,
+  profile: profileReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

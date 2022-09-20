@@ -8,7 +8,6 @@ import { getPhotos } from '../../utils/firebase-functions'
 import { selectPhotosState } from '../../redux-store/photos.slice'
 import styles from './styles'
 import Post from '../post/Post'
-import { Photos } from '../../redux-store/types'
 
 const Timeline = () => {
   const { userInfo } = useAppSelector(selectUserInfoState)

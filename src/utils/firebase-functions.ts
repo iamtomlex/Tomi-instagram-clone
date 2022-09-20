@@ -14,6 +14,7 @@ import {
 import {
   AuthState,
   Photos,
+  PhotosState,
   SuggestedProfilesState,
   UserInfoState,
 } from '../redux-store/types'
@@ -35,7 +36,7 @@ import {
 import { getUserInfo } from '../redux-store/user.slice'
 import { getSuggestedProfiles } from '../redux-store/suggestedProfiles.slice'
 import { getFollowedUserPhotos } from '../redux-store/photos.slice'
-import { Comment } from '../components/post/types'
+import { getPhotosCollection, getProfile } from '../redux-store/profile.slice'
 
 export const makeSignUpRequest = async (
   payload: MakeSignUpRequestInterface,
@@ -247,4 +248,86 @@ export const addComments = async (
   return await updateDoc(docRef, {
     comments: arrayUnion({ displayName, comment }),
   })
+}
+
+export const getUserByUsername = async (
+  username: string | undefined,
+  dispatch: ThunkDispatch<
+    EmptyObject & {
+      auth: AuthState
+      user: UserInfoState
+      suggestedProfiles: SuggestedProfilesState
+      photos: PhotosState
+    } & PersistPartial,
+    undefined,
+    AnyAction
+  > &
+    Dispatch<AnyAction>
+) => {
+  const q = query(colRef, where('username', '==', username))
+  const snapShot = await getDocs(q)
+  const result: any = snapShot.docs.map((item) => ({
+    ...item.data(),
+  }))
+
+  dispatch(getProfile(result))
+}
+
+export const getUserPhotosByUsername = async (
+  username: string | undefined,
+  dispatch: ThunkDispatch<
+    EmptyObject & {
+      auth: AuthState
+      user: UserInfoState
+      suggestedProfiles: SuggestedProfilesState
+      photos: PhotosState
+    } & PersistPartial,
+    undefined,
+    AnyAction
+  > &
+    Dispatch<AnyAction>
+) => {
+  const uq = query(colRef, where('username', '==', username))
+  const usnapShot = await getDocs(uq)
+  const hh: any = usnapShot.docs.map((item) => ({
+    ...item.data(),
+  }))
+  const [user] = hh
+
+  const photoRef = collection(db, 'photos')
+
+  const q = query(photoRef, where('userId', '==', user.userId))
+
+  const snapShot = await getDocs(q)
+
+  const result = snapShot.docs.map((item) => ({
+    ...item.data(),
+  }))
+
+  dispatch(getPhotosCollection(result))
+}
+
+export const isUserfollowingProfile = async (
+  loggedInUsername: string,
+  profileUserId: string
+) => {
+  const q = query(
+    colRef,
+    where('username', '==', loggedInUsername),
+    where('following', 'array-contains', profileUserId)
+  )
+  const snapShot = await getDocs(q)
+
+  const [response = {}] = snapShot.docs.map((item) => ({ ...item.data() }))
+
+  return response.userId
+}
+
+export async function toggleFollow(
+  activeUserId: string,
+  profileId: string,
+  isFollowingProfile: boolean
+) {
+  await updateLoggedInUserFollowing(activeUserId, profileId, isFollowingProfile)
+  await updateFollowedProfile(activeUserId, profileId, isFollowingProfile)
 }

@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import { FaRegCommentDots } from 'react-icons/fa'
+import PuffLoader from '../loader/puffLoader'
 
 interface Props {
   photoId: string
@@ -20,10 +21,12 @@ const Actions = ({ photoId, totalLikes, likedPhoto, handleFocus }: Props) => {
   const { userInfo } = useAppSelector(selectUserInfoState)
   const [toggleLiked, setToggleLiked] = React.useState<boolean>(likedPhoto)
   const [likes, setLikes] = React.useState(totalLikes)
+  const [loading,setLoading] =React.useState(false)
 
   const dispatch = useAppDispatch()
 
   const handleToggleLiked = async () => {
+    setLoading(true)
     if (userInfo) {
       await handleLiked(photoId, userInfo?.userId, toggleLiked)
       await getPhotos(userInfo.userId, userInfo.following, dispatch)
@@ -32,6 +35,8 @@ const Actions = ({ photoId, totalLikes, likedPhoto, handleFocus }: Props) => {
     setToggleLiked((toggleLiked) => !toggleLiked)
 
     setLikes((likes) => (toggleLiked ? likes - 1 : likes + 1))
+
+    setLoading(false)
   }
 
   return (
@@ -39,8 +44,10 @@ const Actions = ({ photoId, totalLikes, likedPhoto, handleFocus }: Props) => {
       <Box
         sx={{ display: 'flex', justifyContent: 'space-between', pl: '0.5rem' }}
       >
-        <Box sx={{ display: 'flex' }}>
-          <IconButton
+        <Box sx={{ display: 'flex' ,justifyContent:'center', alignItems:'center', }}>
+          {
+            loading ? <PuffLoader/> : 
+              <IconButton
             onClick={handleToggleLiked}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
@@ -54,6 +61,8 @@ const Actions = ({ photoId, totalLikes, likedPhoto, handleFocus }: Props) => {
               <FavoriteBorderIcon />
             )}
           </IconButton>
+          }
+        
           <IconButton
             onClick={handleFocus}
             onKeyDown={(e) => {

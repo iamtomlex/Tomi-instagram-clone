@@ -35,8 +35,11 @@ export interface UserInfoState {
   userInfo: UserInfo | null
 }
 
+export interface ProfileState {
+  profile: UserInfo[]
+}
+
 export interface SuggestedProfile {
-  // suggestedProfiles: {
   email: string
   userId: string
   username: string
@@ -44,7 +47,6 @@ export interface SuggestedProfile {
   followers: string[]
   following: string[]
   dateCreated: string
-  // }[]
 }
 
 export interface SuggestedProfilesState {
@@ -62,8 +64,29 @@ interface Comment {
 }
 
 export interface Photos {
-  // photos: {
-    username: string
+  username: string
+  userLatitude: string
+  comments: Comment[]
+  caption: string
+  dateCreated: number
+  likes: string[]
+  photoId: string
+  userLongitude: string
+  userId: string
+  imageSrc: string
+  userLikedPhotos: boolean
+}
+
+export interface PhotosState {
+  photos: Photos[] | null
+}
+
+export interface PhotosAction {
+  photos: Photos[]
+}
+
+export interface PhotosCollectionState {
+  photosCollection: {
     userLatitude: string
     comments: Comment[]
     caption: string
@@ -73,15 +96,5 @@ export interface Photos {
     userLongitude: string
     userId: string
     imageSrc: string
-    // photosWithUserDetails:Extras[]
-    userLikedPhotos: boolean
-  }
-
-
-export interface PhotosState {
-  photos: Photos[] | null
-}
-
-export interface PhotosAction {
-  photos: Photos[]
+  }[]
 }

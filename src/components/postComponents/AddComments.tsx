@@ -58,8 +58,6 @@ const AddComments = ({
         <FormControl sx={{ display: 'flex', flex: '1' }}>
           <BootstrapInput
             aria-label='Add a comment'
-            autoFocus
-            required
             fullWidth
             autoComplete='off'
             type='text'

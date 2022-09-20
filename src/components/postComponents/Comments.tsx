@@ -29,7 +29,7 @@ const Comments = ({
           <Typography
             sx={{ mb: '0.25rem', color: grey[500], cursor: 'pointer' }}
           >
-            View all {comments.length} comments
+            View all comments
           </Typography>
         )}
         {comments.slice(0, 3).map((item) => (

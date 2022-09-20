@@ -46,7 +46,6 @@ const Login = () => {
     try {
       if (!user) {
         await makeLoginRequest(payload, dispatch, callback)
-        toast.success('You have successfully logged in')
       }
     } catch (err) {
       toast.error('Unable to Login!!')
@@ -99,7 +98,6 @@ const Login = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     autoComplete='email'
-                    autoFocus
                     required
                     fullWidth
                     sx={styles.textFieldInput}
@@ -123,7 +121,6 @@ const Login = () => {
                     type='password'
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    autoFocus
                     required
                     fullWidth
                     sx={styles.textFieldInput}

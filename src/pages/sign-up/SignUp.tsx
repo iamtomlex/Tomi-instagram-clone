@@ -114,7 +114,6 @@ const SignUp = () => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     autoComplete='username'
-                    autoFocus
                     required
                     fullWidth
                     sx={styles.textFieldInput}
@@ -139,7 +138,6 @@ const SignUp = () => {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     autoComplete='fullName'
-                    autoFocus
                     required
                     fullWidth
                     sx={styles.textFieldInput}
@@ -160,7 +158,6 @@ const SignUp = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     autoComplete='email'
-                    autoFocus
                     required
                     fullWidth
                     sx={styles.textFieldInput}
@@ -184,8 +181,6 @@ const SignUp = () => {
                     type='password'
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    autoComplete='false'
-                    autoFocus
                     required
                     fullWidth
                     sx={styles.textFieldInput}

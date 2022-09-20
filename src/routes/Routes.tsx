@@ -8,6 +8,7 @@ const Dashboard = lazy(() => import('../pages/dashboard'))
 const Login = lazy(() => import('../pages/login'))
 const Signup = lazy(() => import('../pages/sign-up'))
 const NotFound = lazy(() => import('../pages/not-found'))
+const Profile =lazy(()=>import('../pages/profile'))
 
 const App = () => {
   return (
@@ -37,6 +38,15 @@ const App = () => {
           element={
             <AuthRoute>
               <Dashboard />
+            </AuthRoute>
+          }
+        />
+
+        <Route
+          path={ROUTES.PROFILE}
+          element={
+            <AuthRoute>
+              <Profile />
             </AuthRoute>
           }
         />
