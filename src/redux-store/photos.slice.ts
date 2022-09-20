@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '.'
-import { Photos, PhotosState } from './types'
+import {  PhotosState } from './types'
 
 const initialState: PhotosState = {
   photos: null,

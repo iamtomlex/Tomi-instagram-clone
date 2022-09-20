@@ -21,12 +21,10 @@ const Profile = () => {
     ;(async () => {
       await getUserByUsername(username, dispatch)
 
-      if (profile) {
-        if (profile.length >= 1) {
+        if (profile.length >0) {
           navigate(`/p/${username}`, { replace: true })
         } else {
           navigate(ROUTES.ERROR, { replace: true })
-        }
       }
     })()
 
