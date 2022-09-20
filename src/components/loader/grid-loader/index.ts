@@ -1,3 +1,3 @@
-import GridLoader from './GridLoader'
+import GridLoader from "./GridLoad";
 
 export default GridLoader
